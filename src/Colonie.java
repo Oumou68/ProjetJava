@@ -15,6 +15,7 @@ public class Colonie {
     }
 
     public void ajouterRelation(String colon1, String colon2) {
+        relations.get(colon1).add(colon2);
         relations.get(colon2).add(colon1);
     }
 

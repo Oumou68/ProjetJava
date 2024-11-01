@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class Main {
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -77,10 +78,10 @@ public class Main {
         }
 
         // Le reste du programme pour l'affectation des ressources
-        Affectation assignment = new Affectation(colony, preferences);
-        assignment.affecterResources();
-        assignment.afficherAffecation();
-        System.out.println("Nombre de colons jaloux : " + assignment.calculateJealousy());
+        Affectation affectation = new Affectation(colony, preferences);
+        affectation.affecterResources();
+        affectation.afficherAffecation();
+        System.out.println("Nombre de colons jaloux : " + affectation.calculerJalousie());
 
         // Menu pour échange de ressources et affichage des colons jaloux
         while (true) {
@@ -88,9 +89,9 @@ public class Main {
             String userInput = scanner.nextLine(); // Lire l'entrée comme une chaîne
 
             try {
-                int userChoice = Integer.parseInt(userInput); // Convertir en entier
+                int choix = Integer.parseInt(userInput); // Convertir en entier
 
-                if (userChoice == 1) {
+                if (choix == 1) {
                     // Échanger les ressources de deux colons
                     System.out.println("Entrez les deux colons dont vous souhaitez échanger les ressources (ex : A B) : ");
                     String colon1 = scanner.next();
@@ -99,15 +100,15 @@ public class Main {
                     if (!preferences.hasPreferences(colon1) || !preferences.hasPreferences(colon2)) {
                         System.out.println("Un ou les deux colons n'existent pas.");
                     } else {
-                        assignment.echangerResources(colon1, colon2);
+                        affectation.echangerResources(colon1, colon2);
                         System.out.println("Ressources échangées.");
-                        assignment.afficherAffecation();
+                        affectation.afficherAffecation();
                     }
                     scanner.nextLine(); // Nettoyer le buffer après next()
-                } else if (userChoice == 2) {
+                } else if (choix == 2) {
                     // Afficher le nombre de colons jaloux
-                    System.out.println("Nombre de colons jaloux : " + assignment.calculateJealousy());
-                } else if (userChoice == 3) {
+                    System.out.println("Nombre de colons jaloux : " + affectation.calculerJalousie());
+                } else if (choix == 3) {
                     break; // Sortie du menu
                 } else {
                     System.out.println("Option incorrecte, veuillez entrer un numéro entre 1 et 3.");
@@ -116,5 +117,6 @@ public class Main {
                 System.out.println("Entrée invalide, veuillez entrer un nombre pour choisir une option.");
             }
         }
+
     }
 }

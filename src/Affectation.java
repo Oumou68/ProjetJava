@@ -32,24 +32,24 @@ public class Affectation {
     }
 
     // Calculer le nombre de colons jaloux
-    public int calculateJealousy() {
-        int jealousy = 0;
+    public int calculerJalousie() {
+        int jaloux = 0;
         for (String colon : affectation.keySet()) {
             int assignedResource = affectation.get(colon);
             Set<String> dislikedColons = colonie.getRelations(colon);
             for (String dislikedColon : dislikedColons) {
                 List<Integer> dislikedColonPreferences = preferences.getPreferences(dislikedColon);
                 if (dislikedColonPreferences.indexOf(assignedResource) < dislikedColonPreferences.indexOf(affectation.get(dislikedColon))) {
-                    jealousy++;
+                    jaloux++;
                     break;
                 }
             }
         }
-        return jealousy;
+        return jaloux;
     }
 
     // Afficher l'affectation actuelle des ressources
-    public void displayAffectation() {
+    public void afficherAffecation() {
         for (Map.Entry<String, Integer> entry : affectation.entrySet()) {
             System.out.println(entry.getKey() + ": " + entry.getValue());
         }
@@ -60,11 +60,5 @@ public class Affectation {
         int temp = affectation.get(colon1);
         affectation.put(colon1, affectation.get(colon2));
         affectation.put(colon2, temp);
-    }
-
-    public void afficherAffecation() {
-        for (Integer colon : affectation.values()) {
-            System.out.println(colon);
-        }
     }
 }
