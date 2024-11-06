@@ -24,8 +24,16 @@ public class Colonie {
     }
 
     public void ajouterRelation(String colon1, String colon2) {
-        relations.get(colon1).add(colon2);
-        relations.get(colon2).add(colon1);
+        /*
+        * vérification dans la méthode ajouterRelation pour
+        * s'assurer que les deux colons fournis existent dans la carte
+        * */
+        if (relations.containsKey(colon1) && relations.containsKey(colon2)) {
+            relations.get(colon1).add(colon2);
+            relations.get(colon2).add(colon1);
+        } else {
+            System.out.println("Un ou les deux colons n'existent pas.");
+        }
     }
 
     public Set<String> getRelations(String colon) {
