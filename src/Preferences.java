@@ -1,8 +1,10 @@
 import java.util.*;
 
 public class Preferences {
+    // Map qui associe chaque colon à une liste de préférences de ressources
     private Map<String, List<Integer>> preferences;
 
+    // Initialiser les préférences des colons
     public Preferences(int nombreDeColonies) {
         preferences = new HashMap<>();
         for (int i = 0; i < nombreDeColonies; i++) {

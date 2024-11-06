@@ -5,10 +5,15 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Entrée du nombre de colons (limité à 26)
+        /** le nombre 26 est choisi parce que les colons sont représentés par
+         * les lettres majuscules de l'alphabet, de 'A' à 'Z', ce qui
+         * fait un total de 26 lettres. Cela simplifie l'identification
+         * des colons en les associant directement à une lettre de l'alphabet
+         */
         System.out.println("Entrez le nombre de colons (1 à 26) : ");
         int n = scanner.nextInt();
 
+        // Vérifier que le nombre de colons est valide
         if (n < 1 || n > 26) {
             System.out.println("Le nombre de colons doit être compris entre 1 et 26.");
             return; // Fin du programme si le nombre est incorrect

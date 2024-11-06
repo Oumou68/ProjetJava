@@ -1,13 +1,22 @@
 import java.util.*;
 
 public class Colonie {
+
+    /**
+     * nombreDeColonies :Nombre total de colons dans la colonie
+     * Map : associe chaque colon à un ensemble de colons qu'il n'aime pas
+     */
     private int nombreDeColonies;
     private Map<Character, Preferences> colons;
     private Map<String, Set<String>> relations;
 
+
+    // initialiser le nombre de colons et les relations
     public Colonie(int nombreDeColonies) {
         this.nombreDeColonies = nombreDeColonies;
         relations = new HashMap<>();
+
+        // Initialiser chaque colon avec un ensemble vide de relations
         for (int i = 0; i < nombreDeColonies; i++) {
             String colon = String.valueOf((char)('A' + i));
             relations.put(colon, new HashSet<>());  // Initialiser chaque colon avec un Set vide
