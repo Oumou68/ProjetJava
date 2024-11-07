@@ -66,14 +66,21 @@ public class Main {
                     }
                 } else if (choice == 3) {
                     // Vérifier que tous les colons ont des préférences
+                    boolean preferencesComplete = true; // vérifier si tous les colons ont des préférences complètes.
                     for (int i = 0; i < n; i++) {
                         String colon = String.valueOf((char)('A' + i));
                         if (!preferences.hasPreferences(colon)) {
                             System.out.println("Le colon " + colon + " n'a pas de préférences complètes.");
-                            return;
+                            preferencesComplete = false;;
                         }
                     }
-                    break;
+
+                    // Si tous les colons ont bien des préférences, on peut sortir de la boucle
+                    if (preferencesComplete) {
+                        break;
+                    } else {
+                        System.out.println("Veuillez entrer les préférences.");
+                    }
                 } else {
                     System.out.println("Option incorrecte, veuillez entrer un numéro entre 1 et 3.");
                 }

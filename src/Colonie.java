@@ -31,6 +31,7 @@ public class Colonie {
         if (relations.containsKey(colon1) && relations.containsKey(colon2)) {
             relations.get(colon1).add(colon2);
             relations.get(colon2).add(colon1);
+            System.out.println(colon1 + " " + colon2 + "ne s'aiment pas");
         } else {
             System.out.println("Un ou les deux colons n'existent pas.");
         }
