@@ -37,8 +37,9 @@ public class Main {
                     System.out.println("Entrez les deux colons (ex : A B) : ");
                     String colon1 = scanner.next();
                     String colon2 = scanner.next();
+                    scanner.nextLine();
                     colony.ajouterRelation(colon1, colon2);
-                    scanner.nextLine(); // Nettoyer le buffer après next()
+
                 } else if (choice == 2) {
                     // Ajouter les préférences d’un colon
                     System.out.println("Entrez le colon et ses préférences (ex : A 1 2 3 4) : ");
@@ -82,7 +83,7 @@ public class Main {
                         System.out.println("Veuillez entrer les préférences.");
                     }
                 } else {
-                    System.out.println("Option incorrecte, veuillez entrer un numéro entre 1 et 3.");
+                    System.out.println("Option incorrecte, veuillez choisir une option entre 1 et 3.");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Entrée invalide, veuillez entrer un nombre pour choisir une option.");
@@ -98,7 +99,7 @@ public class Main {
         // Menu pour échange de ressources et affichage des colons jaloux
         while (true) {
             System.out.println("1) Échanger les ressources de deux colons\n2) Afficher le nombre de colons jaloux\n3) Fin");
-            String userInput = scanner.nextLine(); // Lire l'entrée comme une chaîne
+            String userInput = scanner.nextLine();
 
             try {
                 int choix = Integer.parseInt(userInput); // Convertir en entier
@@ -116,14 +117,14 @@ public class Main {
                         System.out.println("Ressources échangées.");
                         affectation.afficherAffecation();
                     }
-                    scanner.nextLine(); // Nettoyer le buffer après next()
+                    scanner.nextLine();
                 } else if (choix == 2) {
                     // Afficher le nombre de colons jaloux
                     System.out.println("Nombre de colons jaloux : " + affectation.calculerJalousie());
                 } else if (choix == 3) {
                     break; // Sortie du menu
                 } else {
-                    System.out.println("Option incorrecte, veuillez entrer un numéro entre 1 et 3.");
+                    System.out.println("Option incorrecte, veuillez choisir une option entre 1 et 3.");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Entrée invalide, veuillez entrer un nombre pour choisir une option.");
