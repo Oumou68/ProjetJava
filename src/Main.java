@@ -3,89 +3,130 @@ package src;
 import java.util.*;
 
 public class Main {
+
     public static void main(String[] args) {
+        int n = -1;
         Scanner scanner = new Scanner(System.in);
-        
-        System.out.print("Entrez le nombre de colons : ");
-        int nbColons = scanner.nextInt();
+        System.out.println("Debut du programme");
+
+        while(n < 1 || n > 26) {
+            System.out.println("\nEntrez le nombre de colons (1 à 26) : ");
+            n = scanner.nextInt();
+        }
+
         scanner.nextLine();
+        Colonie colony = new Colonie(n);
+        Affectation affectation = new Affectation(colony);
 
-        Colonie colonie = new Colonie(nbColons);
-
-        boolean finConfiguration = false;
-        while (!finConfiguration) {
-            System.out.println("\n1) Ajouter une relation entre deux colons");
-            System.out.println("2) Ajouter les préférences d'un colon");
-            System.out.println("3) Fin de la configuration");
-            int choix = scanner.nextInt();
-            switch (choix) {
-                case 1 -> {
-                    System.out.print("Entrez les noms des deux colons (ex : A B) : ");
-                    char nom1 = scanner.next().charAt(0);
-                    char nom2 = scanner.next().charAt(0);
-                    scanner.nextLine();
-                    colonie.ajouterRelation(nom1, nom2);
-                    System.out.println(nom1 + " " + nom2 + " ne s'aiment pas.");
-                }
-                case 2 -> {
-                    System.out.print("Entrez le nom du colon : ");
-                    char nom = scanner.next().charAt(0);
-                    System.out.print("Entrez les préférences (ex : 1 2 3...) : ");
-                    List<Integer> preferences = new ArrayList<>();
-                    int i = 0;
-                    while (i < nbColons) {
-                        int preference = scanner.nextInt();
-                        if (preference >= 1 && preference <= nbColons && !preferences.contains(preference)) {
-                            preferences.add(preference);
-                            i++;  // Incrémente seulement si la préférence est valide
-                        } else {
-                            System.out.println("Erreur : la préférence doit être un nombre unique entre 1 et " + nbColons + ".");
-                        }
-                    }    
-                    scanner.nextLine(); // Pour consommer le reste de la ligne
-                    colonie.ajouterPreferences(nom, preferences);
-                }
-
-                case 3 -> {
-                    if (colonie.verifierPreferencesCompletes()) {
-                        finConfiguration = true;
-                        System.out.println("Configuration terminée.");
+        OUTER_1:
+        while (true) {
+            System.out.println("1) Ajouter une relation entre colons\n2) Ajouter les préférences d'un colon\n3) Fin");
+            String input = scanner.nextLine();
+            try {
+                int choice = Integer.parseInt(input);
+                switch (choice) {
+                    case 1 -> {
+                        System.out.println("Entrez les deux colons (ex : A B) : ");
+                        String colon1 = scanner.next();
+                        String colon2 = scanner.next();
+                        colony.ajouterRelation(colon1, colon2);
+                        scanner.nextLine();
                     }
-                }
-                default -> System.out.println("Choix invalide.");
-            }
-        }
-
-        colonie.affectationNaive();
-        
-        boolean finSimulation = false;
-        while (!finSimulation) {
-            System.out.println("\n1) Échanger les ressources de deux colons");
-            System.out.println("2) Afficher le nombre de colons jaloux");
-            System.out.println("3) Fin");
-            System.out.print("Choix : ");
-            int choix = scanner.nextInt();
-            scanner.nextLine();
-
-            switch (choix) {
-                case 1 -> {
-                    System.out.print("Entrez les noms des deux colons : ");
-                    char nom1 = scanner.next().charAt(0);
-                    char nom2 = scanner.next().charAt(0);
-                    scanner.nextLine();
-                    colonie.echangerRessources(nom1, nom2);
-                    colonie.afficherAffectation();
-                }
-                case 2 -> {
-                    int jalousie = colonie.calculerJalousie();
-                    System.out.println("Nombre de colons jaloux : " + jalousie);
-                    colonie.afficherAffectation();
+                    case 2 -> {
+                        System.out.println("Entrez le colon et ses préférences (ex : A 1 2 3 4) : ");
+                        String colonInput = scanner.nextLine();
+                        String[] parts = colonInput.split(" ");
+                        String colon = parts[0];
+                        List<Integer> prefs = new ArrayList<>();
+                        for (int i = 1; i < parts.length; i++) {
+                            if ((Integer.parseInt(parts[i])) <= n){
+                                prefs.add(Integer.valueOf(parts[i]));
+                            }
+                            else{
+                                System.out.println("Entrée invalide de ressource");
+                                break;
+                            }
+                        }   Colon c = colony.getColons().stream().filter(col -> col.getNom().equals(colon)).findFirst().get();
+                        c.setPreferences(prefs);
+                    }
+                    case 3 -> {
+                        // Vérifier que tous les colons ont leurs préférences complètes
+                        boolean tousOntPreferences = true;
                     
+                        for (Colon colon : colony.getColons()) {
+                            if (colon.getPreferences() == null || colon.getPreferences().isEmpty()) {
+                                tousOntPreferences = false;
+                                System.out.println("Le colon " + colon.getNom() + " n'a pas de préférences complètes.");
+                            }
+                        }
+                    
+                        if (tousOntPreferences) {
+                            System.out.println("Tous les colons ont leurs préférences complètes.");
+                            
+                        } else {
+                            System.out.println("Il y a des colons sans préférences complètes.");
+                        }
+                    
+                        // Sortir du menu si tous les colons ont des préférences complètes
+                        if (tousOntPreferences) {
+                            break OUTER_1;  // Quitter la boucle OUTER si toutes les préférences sont complètes
+                        }
+                    }
+                    
+                    default -> System.out.println("Option incorrecte, veuillez entrer un numéro entre 1 et 3.");
                 }
-                case 3 -> finSimulation = true;
-                default -> System.out.println("Choix invalide.");
+                  }catch (NumberFormatException e) {
+                System.out.println("Entrée invalide, veuillez entrer un nombre.");
             }
         }
-        scanner.close();
+
+        affectation.affecterResources();
+        affectation.afficherAffecation();
+
+        OUTER:
+        while (true) {
+            System.out.println("1) Échanger les ressources de deux colons\n2) Afficher le nombre de colons jaloux\n3) Fin");
+            
+            // Vérification de l'entrée
+            if (scanner.hasNextInt()) {
+                int choix = scanner.nextInt(); // Récupère l'entrée comme entier
+        
+                switch (choix) {
+                    case 1 -> {
+                        System.out.println("Entrez les deux colons dont vous souhaitez échanger les ressources, seule la première lettre sera prise en compte (ex : A B) : ");
+                        String colon1, colon2;
+                        char lettreMax = (char) ('A' + n - 1);
+        
+                        while (true) { // Boucle pour valider les entrées
+                            colon1 = scanner.next();
+                            colon2 = scanner.next();
+        
+                            char char_colon1 = colon1.charAt(0);
+                            char char_colon2 = colon2.charAt(0);
+        
+                            if ((char_colon1 >= 'A' && char_colon1 <= lettreMax) && (char_colon2 >= 'A' && char_colon2 <= lettreMax)) {
+                                affectation.echangerResources(char_colon1 + "", char_colon2 + "");
+                                System.out.println("Entree valide");
+                                affectation.afficherAffecation();
+                                break; // Sortir de la boucle si les deux entrées sont valides
+                            } else {
+                                System.out.println("Erreur : Les deux colons doivent être des lettres majuscules entre A et " + n);
+                                System.out.println("Veuillez réessayer (ex : A B) : ");
+                            }
+                        }
+                    }
+                    case 2 -> System.out.println("Nombre de colons jaloux : " + affectation.calculerJalousie());
+                    case 3 -> {
+                        System.out.println("Fin du programme.");
+                        break OUTER; // Sortir de la boucle principale
+                    }
+                    default -> System.out.println("Option incorrecte.");
+                }
+            } else {
+                System.out.println("Entrée invalide. Veuillez entrer un numéro valide.");
+                scanner.next(); // Consomme l'entrée invalide (lettre ou autre)
+            }
+        }
+        
     }
 }
