@@ -1,36 +1,39 @@
 package src;
 
-import java.util.List;
-
 public class Colon {
-    private char nom;
-    private List<Integer> preferences;
-    private int ressourceAttribuee;
+    private String nom;  // Le nom du colon (A, B, C, ...)
+    private Set<String> relations;  // Relations négatives (les colons qu'il n'aime pas)
+    private List<Integer> preferences;  // Liste des préférences de ressources du colon
 
-    public Colon(char nom, List<Integer> preferences) {
+    public Colon(String nom, int nombreDeRessources) {
         this.nom = nom;
-        this.preferences = preferences;
-        this.ressourceAttribuee = -1; // Non attribuée par défaut
+        this.relations = new HashSet<>();
+        this.preferences = new ArrayList<>(); // Initialiser avec une taille correspondant aux ressources
     }
 
-    public char getNom() {
+    public String getNom() {
         return nom;
+    }
+
+    public Set<String> getRelations() {
+        return relations;
     }
 
     public List<Integer> getPreferences() {
         return preferences;
     }
 
-    public int getRessourceAttribuee() {
-        return ressourceAttribuee;
+    public void ajouterRelation(String colon) {
+        relations.add(colon);
     }
 
-    public void setRessourceAttribuee(int ressourceAttribuee) {
-        this.ressourceAttribuee = ressourceAttribuee;
+    public void setPreferences(List<Integer> preferences) {
+        this.preferences = preferences;
     }
 
-    @Override
-    public String toString() {
-        return nom + ": " + ressourceAttribuee;
+    public boolean aDesPreferences() {
+        return !preferences.isEmpty();
     }
+
 }
+
