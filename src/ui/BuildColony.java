@@ -83,6 +83,10 @@ public class BuildColony {
                         if ((Integer.parseInt(parts[i])) <= n){
                             prefsInt.add(Integer.valueOf(parts[i]));
                         }
+                        else{
+                            throw new NumberFormatException(); 
+                        }
+
                     }
                     }catch(NumberFormatException e) {
                     	System.out.println("Entree invalide de ressource");
