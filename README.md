@@ -88,9 +88,9 @@ Ce document fournit des instructions d'utilisation, des détails sur l'algorithm
 
 #### 3. Résolution automatique :
 - **Tests :**
-  - Vérifier que le coût total (jalousies) est réduit après exécution de l'algorithme.
+  - Vérifier le coût total (jalousies)  après exécution de l'algorithme.
   - S'assurer que toutes les ressources sont bien attribuées à un colon.
-- **Résultat attendu :** La solution générée respecte les préférences et minimise les jalousies.
+- **Résultat attendu :** La solution générée respecte les préférences.
 
 #### 4. Calcul des jalousies :
 - **Tests :** Valider les coûts calculés pour des solutions spécifiques.
@@ -100,19 +100,42 @@ Ce document fournit des instructions d'utilisation, des détails sur l'algorithm
 
 ---
 
-## **Structure du projet**
+
+L’arborescence standard est :
 
 ```
-ColonyProject/
-├── src/
-│   ├── colony/         # Modélisation des colons et de la colonie
-│   ├── solver/         # Algorithmes de résolution
-│   ├── io/             # Gestion des fichiers d'entrée/sortie
-│   ├── ui/             # Interface utilisateur (menu interactif)
-├── tests/              # Tests unitaires avec JUnit 5
-├── README.md           # Documentation
-└── ...
+DorcalBah/
+ └── src/
+      ├── colony/
+      │    ├── Colon.java  
+      │    └── Colonie.java
+      ├── io/
+      │    ├── ColonyFileParser.java
+      │    └── ColonyFileWriter.java
+      ├── solver/
+      │    ├── Solver.java
+      │    └── NaiveSolver.java
+      ├── test/
+      │    ├── ColonieTest.java         (contient la méthode main)
+      │    ├── ColonyFileParserTest.java
+      │    └── NaiveSolverTest.java
+      └── ui/
+           ├── Main.java         (contient la méthode main)
+           ├── Affectation.java
+           └── BuildColony.java
 ```
+
+### **Rôles** :
+
+- **`colony`** : contient le *modèle* de la colonie (classe `Colonie`), chaque `Colon` (nom, préférences, relations).  
+- **`io`** : gère l’**import** (`ColonyFileParser`) et l’**export** (`ColonyFileWriter`) de la colonie et/ou solutions.  
+- **`solver`** : contient la**classe abstraite** `Solver` et l’**implémentation** naïve (`NaiveSolver`).  
+- **`ui`** : l’**interface console** :  
+  - `Main.java` : point d’entrée (`main`).  
+  - `Affectation.java` : gère la partie 1 (mode manuel).  
+  - `BuildColony.java` : logique de construction, menus, etc.
+- **`test`** : contient les *tests unitaires*
+
 
 ---
 
