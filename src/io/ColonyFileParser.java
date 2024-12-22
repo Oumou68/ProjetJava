@@ -1,5 +1,6 @@
 package io;
 
+import colony.Colon;
 import colony.Colonie;
 import java.io.*;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class ColonyFileParser {
         List<String> colonsNames = new ArrayList<>(); 
         List<String> detesteLines = new ArrayList<>();
         List<String> preferencesLines = new ArrayList<>();
+        List<String> ressourcesDispo = new ArrayList<>();
         int lineIndex = 0;
         int ressources = 0;
         int preferences = 0;
@@ -63,7 +65,6 @@ public class ColonyFileParser {
             }
 
             if (line.startsWith("colon(")) {
-            	nbcolons ++;
                 if (state > 0) {
                     throw new IOException("colon(...) hors de l'ordre attendu (ligne " + lineIndex + ").");
                 }
@@ -75,7 +76,6 @@ public class ColonyFileParser {
                 nbcolons ++;
             }
             else if (line.startsWith("ressource(")) {
-            	ressources ++;
                 if (state < 1) {
                     state = 1;
                 }
@@ -83,6 +83,10 @@ public class ColonyFileParser {
                     throw new IOException("ressource(...) hors de l'ordre (ligne " + lineIndex + ").");
                 }
                 ressources ++;
+                int start = line.indexOf('(') + 1; 
+                int end = line.indexOf(')');       
+                String ressource = line.substring(start, end);
+                ressourcesDispo.add(ressource);
 
             }
             else if (line.startsWith("deteste(")) {
@@ -97,6 +101,7 @@ public class ColonyFileParser {
                     throw new IOException("deteste(...) hors de l'ordre (ligne " + lineIndex + ").");
                 }
                 detesteLines.add(line);
+               
             }
             else if (line.startsWith("preferences(")) {
             	preferences ++;
@@ -119,9 +124,7 @@ public class ColonyFileParser {
         int n = colonsNames.size();
         if (n > 26) {
             throw new IOException("Trop de colons (>26) !");
-        }
-        
-        
+        }        
         
        
         // On construit la Colonie
@@ -137,50 +140,43 @@ public class ColonyFileParser {
             String inside = dLine.substring("deteste(".length(), dLine.length()-2);
             String[] parts = inside.split(",");
             if (parts.length != 2) {
-                throw new IOException("deteste(...) doit avoir 2 arguments. (ligne " +(int)(nbcolons +detesteLines.indexOf(dLine)+1)+").");
+                throw new IOException("deteste(...) doit avoir 2 arguments. (ligne " +(int)(nbcolons+ressources+detesteLines.indexOf(dLine))+").");
             }
             String c1 = parts[0].trim();
             String c2 = parts[1].trim();
+            if (!colonsNames.contains(c1)||(!colonsNames.contains(c2))) {
+            	throw new IOException("un ou les deux colons n'existent pas. (ligne " +(int)(nbcolons+ressources+detesteLines.indexOf(dLine))+").");
+            }
             colony.ajouterRelation(c1, c2);
         }
 
-        // 3) preferences(...)
+        // 3) preferences(...
         for (String pLine : preferencesLines) {
             // ex: preferences(nomColon,1,2,3,...).
             String inside = pLine.substring("preferences(".length(), pLine.length()-2);
             String[] parts = inside.split(",");
-            if (parts.length != preferences + 1) {
-                throw new IOException("preferences(...) pas assez d'arguments. (ligne "+ (int)(nbcolons+deteste+preferencesLines.indexOf(pLine)+1)+").");
+            if (parts.length != ressourcesDispo.size()+ 1) {
+                throw new IOException("preferences(...) nombre incorrect d'arguments. (ligne "+ (int)(2*nbcolons+deteste+preferencesLines.indexOf(pLine)+1)+").");
             }
             String cName = parts[0].trim();
 
             // On retrouve le colon (ex: "A")
-            colony.getColons().stream()
-                   .filter(col -> col.getNom().equals(cName))
-                   .findFirst()
-                   .ifPresentOrElse(col -> {
-                       List<String> prefs = new ArrayList<>();
-                       for (int i = 1; i < parts.length; i++) {
-                           try {
-                               String val = parts[i].trim();
-                               prefs.add(val);
-                           } catch (NumberFormatException e) {
-                               System.out.println("Valeur non entiere");// Valeur non entière => on skip ou on could throw new RuntimeException
-                           }
-                       }
-                       col.setPreferences(prefs);
-                   }, () -> {
-                       // colon non trouvé => possible erreur
-                   });
+            Colon col = colony.findColonByName(cName);
+            List<String> prefs = new ArrayList<>();
+            for (int i = 1; i < parts.length; i++) {
+            	String val = parts[i].trim();
+            	if (!ressourcesDispo.contains(val)) {
+            		throw new IOException("ressource inconnue. (ligne "+ (int)(2*nbcolons+deteste+preferencesLines.indexOf(pLine)+1)+").");
+                }
+            	prefs.add(val);    	
+           }
+           col.setPreferences(prefs);
+          
         }
-
         // Vérifier si tous les colons ont des prefs
         if (!colony.tousLesColonsOntPreferences()) {
-            throw new IOException("Certains colons n'ont pas de préférences !");
-        }
-
-        
-
+        	throw new IOException("Certains colons n'ont pas de préférences !");
+        } 
         return colony;
     }
 
