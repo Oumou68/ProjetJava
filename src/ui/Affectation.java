@@ -2,7 +2,7 @@ package ui;
 
 import colony.Colon;
 import colony.Colonie;
-import solver.Solver;
+
 
 import java.util.*;
 
@@ -10,7 +10,7 @@ import java.util.*;
  * Gère l'affectation en mode manuel (partie 1),
  * avec colon->ressource (String) au lieu d'entier.
  */
-public class Affectation extends Solver {
+public class Affectation {
 
     /** La colonie pour laquelle on fait l'affectation. */
     private final Colonie colonie;
@@ -121,9 +121,5 @@ public class Affectation extends Solver {
         affectation.put(colon2, temp);
     }
 
-	@Override
-	public Map<String, String> solve(Colonie colonie) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 }
