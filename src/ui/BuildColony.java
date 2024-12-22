@@ -169,7 +169,6 @@ public class BuildColony {
         Scanner sc = new Scanner(System.in);
         // Le solver renvoie Map<String,String> => colon->resource
         Solver solver = new NaiveSolver(); 
-        // ... mais si votre interface Solver est paramétrée différemment, adaptez.
 
         // On stocke la solution dans Map<String, String>
         Map<String, String> currentSolution = null;
