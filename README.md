@@ -116,7 +116,7 @@ DorcalBah/
       │    ├── Solver.java
       │    └── NaiveSolver.java
       ├── test/
-      │    ├── ColonieTest.java         (contient la méthode main)
+      │    ├── ColonieTest.java         
       │    ├── ColonyFileParserTest.java
       │    └── NaiveSolverTest.java
       └── ui/
