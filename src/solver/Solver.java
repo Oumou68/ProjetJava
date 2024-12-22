@@ -3,11 +3,14 @@ package solver;
 import colony.Colon;
 import colony.Colonie;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
- * Classe abstraitre pour un solveur :
+ * Classe utilitaire abstraitre pour un solveur :
  *  - solve() produit une affectation
  *  - computeCost() calcule le nombre de colons jaloux
  */
@@ -65,5 +68,50 @@ public abstract class Solver {
             }
         }
         return jaloux;
+    }
+    
+    /**
+     * Échange la ressource de deux colons (c1 et c2) 
+     * dans une solution existante, renvoie une nouvelle map.
+     * 
+     * @param original solution existante
+     * @param c1 nom du premier colon
+     * @param c2 nom du second colon
+     * @return une copie modifiée de la solution (échange de ressources)
+     */
+    public Map<String, String> swap(Map<String, String> original, String c1, String c2) {
+        // Copie la map
+        Map<String, String> newSol = new HashMap<>(original);
+        // Échange
+        String tmp = newSol.get(c1);
+        newSol.put(c1, newSol.get(c2));
+        newSol.put(c2, tmp);
+        return newSol;
+    }
+    
+    /**
+     * Construit la solution initiale "naïve" : 
+     * chaque colon reçoit la première ressource encore disponible 
+     * dans son ordre de préférences.
+     * 
+     * @param colonie la colonie
+     * @return une map <nomColon, nomRessource>
+     */
+    public Map<String, String> buildInitialSolution(Colonie colonie) {
+        Map<String, String> sol = new HashMap<>();
+        // Ensemble des ressources déjà utilisées
+        Set<String> used = new HashSet<>();
+
+        for (Colon c : colonie.getColons()) {
+            for (String pref : c.getPreferences()) {
+                if (!used.contains(pref)) {
+                    // On assigne pref à c
+                    sol.put(c.getNom(), pref);
+                    used.add(pref);
+                    break; // on sort dès qu'on a trouvé une ressource dispo pour c
+                }
+            }
+        }
+        return sol;
     }
 }
