@@ -15,7 +15,7 @@ Ce document fournit des instructions d'utilisation, des détails sur l'algorithm
    - Lancez le programme sans fournir de fichier en argument.
    - Exemple :
      ```bash
-     java -jar ColonyProject.jar
+     java -jar DorcalBah.jar
      ```
    - Vous serez guidé pour créer une colonie, ajouter des relations entre colons, et définir leurs préférences.
 
@@ -23,7 +23,7 @@ Ce document fournit des instructions d'utilisation, des détails sur l'algorithm
    - Fournissez un fichier texte décrivant la colonie.
    - Exemple :
      ```bash
-     java -jar ColonyProject.jar chemin/vers/le_fichier.txt
+     java -jar DorcalBah.jar chemin/vers/le_fichier.txt
      ```
    - Format du fichier attendu :
      ```text
