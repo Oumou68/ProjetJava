@@ -26,15 +26,18 @@ public class Main {
                 System.out.println("Colonie chargée depuis le fichier : " + filePath);
             } catch (FileNotFoundException e) {
                 System.err.println("Fichier introuvable : " + e.getMessage());
-                System.out.println("Passage en mode manuel...");
+                System.out.println("Arret du programme");
+                return;
             } catch (IOException e) {
                 System.err.println("Erreur de format/lecture : " + e.getMessage());
-                System.out.println("Passage en mode manuel...");
+                System.out.println("Arret du programme");
+                return;
             }
         }
 
-        // 2) Si échec ou aucun arg => mode manuel (partie 1)
+        // 2) Si aucun arg => mode manuel (partie 1)
         if (colonie == null) {
+            System.out.println("Mode manuel ...");
             BuildColony.runPartie1();
         } else {
             BuildColony.runPartie2(colonie);
